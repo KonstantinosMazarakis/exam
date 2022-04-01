@@ -1,4 +1,5 @@
 import imp
+from unittest import result
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.models import car
 from flask import flash
@@ -46,14 +47,21 @@ class User:
     @classmethod
     def all_sold_cars(cls):
         query = "SELECT * FROM purchases"
-        return connectToMySQL('exam_schema').query_db( query)
+        result = connectToMySQL('exam_schema').query_db( query)
+        car_ids = []
+        for row in result:
+            car_ids.append(row['car_id'])
+        return car_ids
 
-
-
+    @classmethod
+    def all_purchased_cars(cls):
+        query = "SELECT * FROM purchases"
+        result = connectToMySQL('exam_schema').query_db( query)
+        return result
 
     @classmethod
     def user_purchases_cars(cls,data):
-        query = "SELECT * FROM users left join purchases ON purchases.user_id = users.id left join cars ON purchases.user_id = cars.id WHERE users.id = %(id)s;"
+        query = "SELECT * FROM users left join purchases ON purchases.user_id = users.id left join cars ON purchases.car_id = cars.id WHERE users.id = %(id)s;"
         results = connectToMySQL('exam_schema').query_db( query, data )
         user = User(results[0])
         for row_from_db in results:

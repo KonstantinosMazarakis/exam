@@ -30,16 +30,15 @@
               <td>{{car.year}}</td>
               <td>{{car.user.first_name}} {{car.user.last_name}}</td>
               <td>
-                {%for sold in sold_cars%}
-                  {%if car.id == sold.car_id%}
-                  <p>SOLD</p>
+                  {%if car.id  in sold_cars%}
+                    <p>SOLD</p>
+                  {% else %}
+                    <a href="cars/{{car.id}}">View</a>
+                    {%if car.user.id == session['id']%}
+                      <a href="cars/{{car.id}}/edit">edit </a>
+                      <a href="cars/{{car.id}}/delete">delete </a>
+                    {%endif%}
                   {%endif%}
-                  {%endfor%}
-                  <a href="cars/{{car.id}}">View</a>
-                  {%if car.user.id == session['id']%}
-                  <a href="cars/{{car.id}}/edit">edit </a>
-                  <a href="cars/{{car.id}}/delete">delete </a>
-                {%endif%}
               </td>
             </tr>
             {%endfor%}

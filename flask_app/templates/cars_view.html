@@ -29,11 +29,13 @@
         <p>Instructions: {{car.year}}</p>
         <p>Description: {{car.description}}</p>
         <p>Seller: {{car.user.first_name}} {{car.user.last_name}}</p>
+        {%if session['id'] != car.users_id %}
         <form action="/cars/purchase/post" method="post">
             <input type="hidden" name="car_id" value="{{car.id}}">
             <input type="hidden" name="user_id" value="{{session['id']}}">
             <input type="submit" class="btn btn-info mt-2 d-block" name="Purchase" value="Purchase">
         </form>
+        {%endif%}
     </div>
 </main>
 </body>
